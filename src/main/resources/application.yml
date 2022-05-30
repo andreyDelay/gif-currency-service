@@ -1,0 +1,20 @@
+server:
+  port: 8088
+
+feign-client:
+    currency-api:
+      url: https://openexchangerates.org/api/ #${LATEST_RATE_URL} latest.json
+      options:
+        latest: latest.json
+        historical: historical
+        appID: aeafe872a06a4529b38b8226970ef527
+    gif-api:
+      url: api.giphy.com/v1/gifs/search
+      options:
+
+
+logging:
+  level:
+    com.andrey.gifcurrencyservice.feign: DEBUG
+  file:
+    name: logs/OpenFeign.log
