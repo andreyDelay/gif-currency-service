@@ -1,15 +1,15 @@
-package com.andrey.gifcurrencyservice.exception;
+package com.andrey.gifcurrencyservice.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class ApiErrorResponse {
+public class ApiErrorResponseDto {
 	private String code;
 	private String message;
 
-	public ApiErrorResponse(Enum<?> code, String message) {
+	public ApiErrorResponseDto(Enum<?> code, String message) {
 		this.code = code.name();
 		this.message = message;
 	}

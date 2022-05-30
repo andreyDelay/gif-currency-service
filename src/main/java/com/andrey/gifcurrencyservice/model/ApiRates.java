@@ -2,8 +2,10 @@ package com.andrey.gifcurrencyservice.model;
 
 import lombok.Value;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Value
 public class ApiRates {
@@ -11,5 +13,5 @@ public class ApiRates {
 	private String license;
 	private Date timestamp;
 	private String base;
-	private List<CurrencyRate> rates;
+	private Map<String, Double> rates;
 }
