@@ -2,9 +2,7 @@ package com.andrey.gifcurrencyservice.model;
 
 import lombok.Value;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 @Value

@@ -2,9 +2,14 @@ package com.andrey.gifcurrencyservice.service.impl;
 
 import com.andrey.gifcurrencyservice.config.GifApiConfigurationProperties;
 import com.andrey.gifcurrencyservice.feign.GifFeignClientAPI;
+import com.andrey.gifcurrencyservice.model.giphy.GiphyData;
+import com.andrey.gifcurrencyservice.model.giphy.GiphyResponseBody;
 import com.andrey.gifcurrencyservice.service.GifService;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.TreeNode;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.jayway.jsonpath.JsonPath;
 import lombok.AllArgsConstructor;
@@ -16,7 +21,6 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 @AllArgsConstructor
 public class GifServiceImpl implements GifService {
-
 	private final GifFeignClientAPI gifFeignClientAPI;
 	private final GifApiConfigurationProperties apiConfigurationProperties;
 
@@ -45,15 +49,24 @@ public class GifServiceImpl implements GifService {
 	private String retrieveTargetUrl(String jsonResponse) {
 		try (JsonParser parser = new JsonFactory().createParser(jsonResponse)) {
 			int randomImageIndex = getRandomImageIndex(jsonResponse);
-			parser.setCodec(new ObjectMapper());
+			ObjectMapper objectMapper = new ObjectMapper()
+					.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+			parser.setCodec(objectMapper);
 
-			return parser.readValueAsTree()
-					.get("data")
-					.get(randomImageIndex)
-					.get("images")
-					.get("original")
-					.get("webp")
-					.toString();
+			TreeNode treeNode = parser.readValueAsTree()
+					.get(apiConfigurationProperties.getRootElementName())
+					.get(randomImageIndex);
+
+			String s = treeNode.toString();
+			GiphyData giphyData = objectMapper.readValue(s, GiphyData.class);
+
+			return parser.readValueAs(JsonNode.class)
+							.get(apiConfigurationProperties.getRootElementName())
+							.get(randomImageIndex)
+							.get(apiConfigurationProperties.getTargetObjectsCollectionName())
+							.get(apiConfigurationProperties.getImageObjectName())
+							.get(apiConfigurationProperties.getImageTypeName())
+							.textValue();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

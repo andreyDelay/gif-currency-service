@@ -16,6 +16,8 @@ feign-client:
       limit: 30
       positive-search-query: rich
       negative-search-query: broke
+      root-element-name: data
+      target-objects-collection-name: images
       image-object-name: original
       image-type-name: url
 

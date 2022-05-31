@@ -16,4 +16,6 @@ public class GifApiConfigurationProperties {
     private String negativeSearchQuery;
     private String imageObjectName;
     private String imageTypeName;
+    private String rootElementName;
+    private String targetObjectsCollectionName;
 }
