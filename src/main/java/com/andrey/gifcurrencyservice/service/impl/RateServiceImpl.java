@@ -39,8 +39,7 @@ public class RateServiceImpl implements RateService {
 						apiConfiguration.getAppId(),
 						apiConfiguration.getObjectiveCurrencyCode())
 				.orElseThrow(() -> new CurrencyFeignClientResponseException(
-						String.format("Couldn't get a response from API, for specified date %s .",
-								specifiedDate)));
+						String.format("Couldn't get a response from API, for specified date %s .", specifiedDate)));
 
 		return fetchCurrencyRateFromApiRates(apiRates, currencyCode);
 	}

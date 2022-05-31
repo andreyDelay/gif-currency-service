@@ -1,7 +1,9 @@
 package com.andrey.gifcurrencyservice.service.impl;
 
 import com.andrey.gifcurrencyservice.config.GifApiConfigurationProperties;
+import com.andrey.gifcurrencyservice.exception.GifFeignClientResponseException;
 import com.andrey.gifcurrencyservice.feign.GifFeignClientAPI;
+import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
 import com.andrey.gifcurrencyservice.model.GiphyResponseList;
 import com.andrey.gifcurrencyservice.service.GifService;
 import lombok.AllArgsConstructor;
@@ -16,23 +18,12 @@ public class GifServiceImpl implements GifService {
 	private final GifApiConfigurationProperties apiConfigurationProperties;
 
 	@Override
-	public String getPositiveGifUrl() {
+	public String getGifUrlByCurrencyDynamic(CurrencyDynamic currencyDynamic) {
 		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
 						apiConfigurationProperties.getApiKey(),
-						apiConfigurationProperties.getPositiveSearchQuery(),
+						currencyDynamic.getValue(),
 						apiConfigurationProperties.getLimit())
-				.orElseThrow(() -> new RuntimeException(""));
-
-		return getRandomGifURL(giphyResponseList);
-	}
-
-	@Override
-	public String getNegativeGifUrl() {
-		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
-						apiConfigurationProperties.getApiKey(),
-						apiConfigurationProperties.getNegativeSearchQuery(),
-						apiConfigurationProperties.getLimit())
-				.orElseThrow(() -> new RuntimeException(""));
+				.orElseThrow(() -> new GifFeignClientResponseException("Cannot get a response from giphy API."));
 
 		return getRandomGifURL(giphyResponseList);
 	}

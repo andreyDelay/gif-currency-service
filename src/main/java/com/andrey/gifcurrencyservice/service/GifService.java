@@ -1,7 +1,7 @@
 package com.andrey.gifcurrencyservice.service;
 
-public interface GifService {
-    String getPositiveGifUrl();
+import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
 
-    String getNegativeGifUrl();
+public interface GifService {
+    String getGifUrlByCurrencyDynamic(CurrencyDynamic currencyDynamic);
 }
