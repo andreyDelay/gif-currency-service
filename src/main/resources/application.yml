@@ -14,8 +14,6 @@ feign-client:
     options:
       api-key: oPIMd6yEozhTyom1QrGcgeORY83ygDTU
       limit: 30
-      positive-search-query: rich
-      negative-search-query: broke
       root-element-name: data
       target-objects-collection-name: images
       image-object-name: original

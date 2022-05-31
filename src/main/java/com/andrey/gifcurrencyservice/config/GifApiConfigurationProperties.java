@@ -12,8 +12,6 @@ import org.springframework.context.annotation.Configuration;
 public class GifApiConfigurationProperties {
     private String apiKey;
     private int limit;
-    private String positiveSearchQuery;
-    private String negativeSearchQuery;
     private String imageObjectName;
     private String imageTypeName;
     private String rootElementName;
