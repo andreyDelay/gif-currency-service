@@ -23,9 +23,9 @@ public class CurrencyController {
 
 	private final CurrencyService currencyService;
 
-	@GetMapping(value = "/changes", produces = MediaType.IMAGE_GIF_VALUE)
+	@GetMapping(value = "/changes")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<byte[]> getGif(@Valid @Pattern(regexp = "[A-Z]{3}")
+	public ResponseEntity<?> getGif(@Valid @Pattern(regexp = "[A-Z]{3}")
 										@RequestParam("charCode") String currencyCode) throws IOException {
 		ResponseBody gifBytesOnCurrencyRateCondition = currencyService.getGifOnCurrencyRateCondition(currencyCode);
 		InputStream inputStream = gifBytesOnCurrencyRateCondition.byteStream();

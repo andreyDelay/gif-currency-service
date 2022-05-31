@@ -13,7 +13,7 @@ public class ApiExceptionHandlerController extends ResponseEntityExceptionHandle
 
 	@ExceptionHandler({CurrencyFeignClientResponseException.class, CurrencyNotFoundException.class,
 						GifFeignClientResponseException.class, GifFetchingException.class})
-	public ResponseEntity handleExceptions(ApiException apiException) {
+	public ResponseEntity<?> handleExceptions(ApiException apiException) {
 		ApiErrorResponseDto apiErrorResponse =
 				new ApiErrorResponseDto(apiException.getCode(), apiException.getMessage());
 		return new ResponseEntity<>(apiErrorResponse, apiException.getHttpStatus());
