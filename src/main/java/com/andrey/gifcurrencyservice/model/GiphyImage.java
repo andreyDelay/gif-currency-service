@@ -1,4 +1,4 @@
-package com.andrey.gifcurrencyservice.model.giphy;
+package com.andrey.gifcurrencyservice.model;
 
 import lombok.Data;
 

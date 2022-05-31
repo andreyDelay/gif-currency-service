@@ -2,20 +2,11 @@ package com.andrey.gifcurrencyservice.service.impl;
 
 import com.andrey.gifcurrencyservice.config.GifApiConfigurationProperties;
 import com.andrey.gifcurrencyservice.feign.GifFeignClientAPI;
-import com.andrey.gifcurrencyservice.model.giphy.GiphyData;
-import com.andrey.gifcurrencyservice.model.giphy.GiphyResponseBody;
+import com.andrey.gifcurrencyservice.model.GiphyResponseList;
 import com.andrey.gifcurrencyservice.service.GifService;
-import com.fasterxml.jackson.core.JsonFactory;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.TreeNode;
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.jayway.jsonpath.JsonPath;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -26,53 +17,39 @@ public class GifServiceImpl implements GifService {
 
 	@Override
 	public String getPositiveGifUrl() {
-		String response = gifFeignClientAPI.getGif(
-				apiConfigurationProperties.getApiKey(),
-				apiConfigurationProperties.getPositiveSearchQuery(),
-				apiConfigurationProperties.getLimit())
+		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
+						apiConfigurationProperties.getApiKey(),
+						apiConfigurationProperties.getPositiveSearchQuery(),
+						apiConfigurationProperties.getLimit())
 				.orElseThrow(() -> new RuntimeException(""));
 
-		return retrieveTargetUrl(response);
+		return getRandomGifURL(giphyResponseList);
 	}
 
 	@Override
 	public String getNegativeGifUrl() {
-		String response = gifFeignClientAPI.getGif(
-				apiConfigurationProperties.getApiKey(),
-				apiConfigurationProperties.getNegativeSearchQuery(),
-				apiConfigurationProperties.getLimit())
+		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
+						apiConfigurationProperties.getApiKey(),
+						apiConfigurationProperties.getNegativeSearchQuery(),
+						apiConfigurationProperties.getLimit())
 				.orElseThrow(() -> new RuntimeException(""));
 
-		return retrieveTargetUrl(response);
+		return getRandomGifURL(giphyResponseList);
 	}
 
-	private String retrieveTargetUrl(String jsonResponse) {
-		try (JsonParser parser = new JsonFactory().createParser(jsonResponse)) {
-			int randomImageIndex = getRandomImageIndex(jsonResponse);
-			ObjectMapper objectMapper = new ObjectMapper()
-					.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-			parser.setCodec(objectMapper);
+	private String getRandomGifURL(GiphyResponseList giphyResponseList) {
+		int gifsQty = giphyResponseList.getData().size();
+		int randomGifIndex = getRandomImageIndex(gifsQty);
 
-			TreeNode treeNode = parser.readValueAsTree()
-					.get(apiConfigurationProperties.getRootElementName());
-
-			String s = treeNode.toString();
-			GiphyResponseBody giphyData = objectMapper.readValue(jsonResponse, GiphyResponseBody.class);
-
-			return parser.readValueAs(JsonNode.class)
-							.get(apiConfigurationProperties.getRootElementName())
-							.get(randomImageIndex)
-							.get(apiConfigurationProperties.getTargetObjectsCollectionName())
-							.get(apiConfigurationProperties.getImageObjectName())
-							.get(apiConfigurationProperties.getImageTypeName())
-							.textValue();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+		return giphyResponseList
+				.getData()
+				.get(randomGifIndex)
+				.getImages()
+				.get(apiConfigurationProperties.getImageObjectName())
+				.getUrl();
 	}
 
-	private int getRandomImageIndex(String response) {
-		int imagesQty = JsonPath.read(response, "$.data.size()");
-		return ThreadLocalRandom.current().nextInt(1, imagesQty);
+	private int getRandomImageIndex(int gifsQty) {
+		return ThreadLocalRandom.current().nextInt(1, gifsQty);
 	}
 }

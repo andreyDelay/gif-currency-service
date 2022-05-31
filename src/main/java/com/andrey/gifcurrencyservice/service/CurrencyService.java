@@ -1,9 +1,7 @@
 package com.andrey.gifcurrencyservice.service;
 
-import com.andrey.gifcurrencyservice.dto.GifDto;
-
-import java.util.Map;
+import okhttp3.ResponseBody;
 
 public interface CurrencyService {
-	GifDto getGifBytesOnCurrencyRateCondition(String currencyCode);
+	ResponseBody getGifOnCurrencyRateCondition(String currencyCode);
 }

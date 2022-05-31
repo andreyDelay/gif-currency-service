@@ -1,10 +1,10 @@
-package com.andrey.gifcurrencyservice.model.giphy;
+package com.andrey.gifcurrencyservice.model;
 
 import lombok.Data;
 
 import java.util.List;
 
 @Data
-public class GiphyResponseBody {
+public class GiphyResponseList {
 	private List<GiphyData> data;
 }

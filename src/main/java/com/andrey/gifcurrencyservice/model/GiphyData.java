@@ -1,4 +1,4 @@
-package com.andrey.gifcurrencyservice.model.giphy;
+package com.andrey.gifcurrencyservice.model;
 
 import lombok.Data;
 
@@ -15,5 +15,4 @@ public class GiphyData {
 	private String title;
 	private String rating;
 	Map<String, GiphyImage> images;
-	//private List<GiphyImage> images;
 }

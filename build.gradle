@@ -31,6 +31,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.6.0'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
+	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
 }
 
 dependencyManagement {
