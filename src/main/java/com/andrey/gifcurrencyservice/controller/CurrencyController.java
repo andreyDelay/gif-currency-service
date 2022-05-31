@@ -23,7 +23,7 @@ public class CurrencyController {
 
 	private final CurrencyService currencyService;
 
-	@GetMapping(value = "/changes")
+	@GetMapping(value = "/changes", produces = MediaType.IMAGE_GIF_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> getGif(@Valid @Pattern(regexp = "[A-Z]{3}")
 										@RequestParam("charCode") String currencyCode) throws IOException {

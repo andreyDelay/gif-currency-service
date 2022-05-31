@@ -10,12 +10,7 @@ public class ConfigureWeb implements WebMvcConfigurer {
     @Override
     public void configureContentNegotiation(ContentNegotiationConfigurer configurer) {
         WebMvcConfigurer.super.configureContentNegotiation(configurer);
-        configurer.favorParameter(true)
-                .parameterName("mediaType")
-                .ignoreAcceptHeader(true)
-                .useRegisteredExtensionsOnly(true)
-                .defaultContentType(MediaType.APPLICATION_JSON)
-                .mediaType("gif", MediaType.IMAGE_GIF)
-                .mediaType("json", MediaType.APPLICATION_JSON);
+        configurer.ignoreAcceptHeader(true)
+                .defaultContentType(MediaType.APPLICATION_JSON, MediaType.IMAGE_GIF);
     }
 }
