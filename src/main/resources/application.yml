@@ -3,16 +3,16 @@ server:
 
 feign-client:
   currency-api:
-    url: https://openexchangerates.org/api/
+    url: ${CURRENCY_API_URL}
     options:
       latest: latest.json
       historical: historical
-      app-id: aeafe872a06a4529b38b8226970ef527
+      app-id: ${APP_ID}
       objective-currency-code: USD
   gif-api:
-    url: api.giphy.com/v1/gifs/search/
+    url: ${GIF_API_URL}
     options:
-      api-key: oPIMd6yEozhTyom1QrGcgeORY83ygDTU
+      api-key: ${API_KEY}
       limit: 30
       root-element-name: data
       target-objects-collection-name: images
