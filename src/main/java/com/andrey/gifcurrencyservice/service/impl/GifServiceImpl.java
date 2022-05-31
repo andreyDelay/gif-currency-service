@@ -54,11 +54,10 @@ public class GifServiceImpl implements GifService {
 			parser.setCodec(objectMapper);
 
 			TreeNode treeNode = parser.readValueAsTree()
-					.get(apiConfigurationProperties.getRootElementName())
-					.get(randomImageIndex);
+					.get(apiConfigurationProperties.getRootElementName());
 
 			String s = treeNode.toString();
-			GiphyData giphyData = objectMapper.readValue(s, GiphyData.class);
+			GiphyResponseBody giphyData = objectMapper.readValue(jsonResponse, GiphyResponseBody.class);
 
 			return parser.readValueAs(JsonNode.class)
 							.get(apiConfigurationProperties.getRootElementName())
