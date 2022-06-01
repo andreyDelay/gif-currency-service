@@ -6,10 +6,7 @@ import com.andrey.gifcurrencyservice.service.CurrencyService;
 import com.andrey.gifcurrencyservice.service.GifService;
 import com.andrey.gifcurrencyservice.service.RateService;
 import lombok.AllArgsConstructor;
-import okhttp3.Call;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.ResponseBody;
+import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,6 +18,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 
 	private final RateService rateService;
 	private final GifService gifService;
+	private final OkHttpClient okHttpClient = new OkHttpClient();
 
 	@Override
 	public ResponseBody getGifOnCurrencyRateCondition(String currencyCode) {
@@ -36,23 +34,15 @@ public class CurrencyServiceImpl implements CurrencyService {
 		return getMediaTypeResponseBodyByURL(targetGifUrl);
 	}
 
-	private CurrencyDynamic determineDynamicType(double currencyRateValueForToday, double currencyRateValueForYesterday) {
-		double dynamic = currencyRateValueForToday - currencyRateValueForYesterday;
-		if (dynamic > 0) {
-			return CurrencyDynamic.NEGATIVE;
-		}
-
-		return CurrencyDynamic.POSITIVE;
+	private CurrencyDynamic determineDynamicType(double todayCurrencyRate, double specifiedDateCurrencyRate) {
+		return (todayCurrencyRate - specifiedDateCurrencyRate) > 0 ? CurrencyDynamic.NEGATIVE: CurrencyDynamic.POSITIVE;
 	}
 
 	private ResponseBody getMediaTypeResponseBodyByURL(String url) {
-		OkHttpClient client = new OkHttpClient();
-		Request request = new Request.Builder()
-				.url(url)
-				.build();
-		Call call = client.newCall(request);
-		try {
-			return call.execute().body();
+		Request request = new Request.Builder().url(url).build();
+		Call call = okHttpClient.newCall(request);
+		try(Response response = call.execute()) {
+			return response.body();
 		} catch (IOException e) {
 			throw new GifFetchingException(e.getMessage());
 		}
