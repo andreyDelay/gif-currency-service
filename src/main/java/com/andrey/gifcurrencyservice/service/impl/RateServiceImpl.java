@@ -8,11 +8,13 @@ import com.andrey.gifcurrencyservice.model.ApiRates;
 import com.andrey.gifcurrencyservice.model.CurrencyRate;
 import com.andrey.gifcurrencyservice.service.RateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class RateServiceImpl implements RateService {
@@ -26,7 +28,11 @@ public class RateServiceImpl implements RateService {
 						apiConfiguration.getLatest(),
 						apiConfiguration.getAppId(),
 						apiConfiguration.getObjectiveCurrencyCode())
-				.orElseThrow(() -> new CurrencyFeignClientResponseException("Couldn't get a response from API."));
+				.orElseThrow(() -> {
+					log.error("Error in class {}, method {}, during feign client currency API response processing.",
+							this.getClass().getSimpleName(), this.getClass().getEnclosingMethod().getName());
+					throw new CurrencyFeignClientResponseException("Couldn't get a response from API.");
+				});
 
 		return fetchCurrencyRateFromApiRates(apiRates, currencyCode);
 	}
@@ -38,8 +44,12 @@ public class RateServiceImpl implements RateService {
 						getApiSpecifiedDateFormat(specifiedDate),
 						apiConfiguration.getAppId(),
 						apiConfiguration.getObjectiveCurrencyCode())
-				.orElseThrow(() -> new CurrencyFeignClientResponseException(
-						String.format("Couldn't get a response from API, for specified date %s .", specifiedDate)));
+				.orElseThrow(() -> {
+					log.error("Error in class {}, method {}, during feign client currency API response processing.",
+							this.getClass().getSimpleName(), this.getClass().getEnclosingMethod().getName());
+					throw new CurrencyFeignClientResponseException(
+							String.format("Couldn't get a response from API, for specified date %s .", specifiedDate));
+				});
 
 		return fetchCurrencyRateFromApiRates(apiRates, currencyCode);
 	}
@@ -49,8 +59,13 @@ public class RateServiceImpl implements RateService {
 				.filter(entry -> entry.getKey().equals(currencyCode))
 				.map(entry -> new CurrencyRate(entry.getKey(), entry.getValue()))
 				.findFirst()
-				.orElseThrow(() -> new CurrencyNotFoundException(
-						String.format("No currency was found with code %s", currencyCode)));
+				.orElseThrow(() -> {
+					log.error("Error in class {}, method {}, currency code {} not found.",
+							this.getClass().getSimpleName(),
+							this.getClass().getEnclosingMethod().getName(),
+							currencyCode);
+					throw new CurrencyNotFoundException(String.format("No code %s was found.", currencyCode));
+				});
 	}
 
 	private String getApiSpecifiedDateFormat(LocalDate specifiedDate) {

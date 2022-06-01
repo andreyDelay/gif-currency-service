@@ -6,12 +6,14 @@ import com.andrey.gifcurrencyservice.service.CurrencyService;
 import com.andrey.gifcurrencyservice.service.GifService;
 import com.andrey.gifcurrencyservice.service.RateService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
 import java.time.LocalDate;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class CurrencyServiceImpl implements CurrencyService {
@@ -44,6 +46,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 		try(Response response = call.execute()) {
 			return response.body();
 		} catch (IOException e) {
+			log.error("Error during http request for URL:{}. To get target GIF image, error:{}", url, e);
 			throw new GifFetchingException(e.getMessage());
 		}
 	}

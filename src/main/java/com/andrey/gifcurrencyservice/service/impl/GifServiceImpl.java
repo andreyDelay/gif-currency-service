@@ -7,10 +7,12 @@ import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
 import com.andrey.gifcurrencyservice.model.GiphyResponseList;
 import com.andrey.gifcurrencyservice.service.GifService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ThreadLocalRandom;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class GifServiceImpl implements GifService {
@@ -23,7 +25,11 @@ public class GifServiceImpl implements GifService {
 						apiConfigurationProperties.getApiKey(),
 						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
 						apiConfigurationProperties.getLimit())
-				.orElseThrow(() -> new GifFeignClientResponseException("Cannot get a response from giphy API."));
+				.orElseThrow(() -> {
+					log.error("Error in class {}, method {}, during feign client Giphy API response processing.",
+							this.getClass().getSimpleName(), this.getClass().getEnclosingMethod().getName());
+					throw new GifFeignClientResponseException("Cannot get a response from giphy API.");
+				});
 
 		return getRandomGifURL(giphyResponseList);
 	}
