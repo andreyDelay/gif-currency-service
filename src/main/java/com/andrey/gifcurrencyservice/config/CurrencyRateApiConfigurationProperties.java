@@ -5,10 +5,10 @@ import lombok.Setter;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Configuration;
 
-@Configuration
-@ConfigurationProperties(prefix = "feign-client.currency-api.options")
 @Getter
 @Setter
+@Configuration
+@ConfigurationProperties(prefix = "feign-client.currency-api.options")
 public class CurrencyRateApiConfigurationProperties {
 	private String latest;
 	private String historical;

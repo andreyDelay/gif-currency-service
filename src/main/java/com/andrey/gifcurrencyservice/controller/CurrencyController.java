@@ -12,10 +12,10 @@ import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
 import java.io.IOException;
 
-@RestController
-@RequestMapping(value = "/api/v1/currency/rates")
-@AllArgsConstructor
 @Validated
+@RestController
+@AllArgsConstructor
+@RequestMapping(value = "/api/v1/currency/rates")
 public class CurrencyController {
 
 	private final CurrencyService currencyService;
