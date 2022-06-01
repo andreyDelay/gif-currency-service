@@ -21,7 +21,7 @@ public class GifServiceImpl implements GifService {
 	public String getGifUrlByCurrencyDynamic(CurrencyDynamic currencyDynamic) {
 		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
 						apiConfigurationProperties.getApiKey(),
-						currencyDynamic.getValue(),
+						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
 						apiConfigurationProperties.getLimit())
 				.orElseThrow(() -> new GifFeignClientResponseException("Cannot get a response from giphy API."));
 

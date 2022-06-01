@@ -4,13 +4,13 @@ public enum CurrencyDynamic {
     POSITIVE("rich"),
     NEGATIVE("broke");
 
-    private String value;
+    private String currencyRatesRelationDynamicPerformance;
 
-    CurrencyDynamic(String value) {
-        this.value = value;
+    CurrencyDynamic(String currencyRatesRelationDynamicPerformance) {
+        this.currencyRatesRelationDynamicPerformance = currencyRatesRelationDynamicPerformance;
     }
 
-    public String getValue() {
-        return value;
+    public String getCurrencyRatesRelationDynamicPerformance() {
+        return currencyRatesRelationDynamicPerformance;
     }
 }
