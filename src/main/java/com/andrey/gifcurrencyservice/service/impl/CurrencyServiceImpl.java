@@ -1,5 +1,6 @@
 package com.andrey.gifcurrencyservice.service.impl;
 
+import com.andrey.gifcurrencyservice.dto.GifByteArrayHolder;
 import com.andrey.gifcurrencyservice.exception.GifFetchingException;
 import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
 import com.andrey.gifcurrencyservice.service.CurrencyService;
@@ -8,9 +9,9 @@ import com.andrey.gifcurrencyservice.service.RateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
+import org.apache.commons.io.IOUtils;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.time.LocalDate;
 
 @Slf4j
@@ -23,7 +24,7 @@ public class CurrencyServiceImpl implements CurrencyService {
 	private final OkHttpClient okHttpClient = new OkHttpClient();
 
 	@Override
-	public ResponseBody getGifOnCurrencyRateCondition(String currencyCode) {
+	public GifByteArrayHolder getGifOnCurrencyRateCondition(String currencyCode) {
 		LocalDate yesterday = LocalDate.now().minusDays(1);
 		double currencyRateValueForToday =
 				rateService.getRateByCodeLatest(currencyCode).getCurrencyRate();
@@ -40,12 +41,13 @@ public class CurrencyServiceImpl implements CurrencyService {
 		return (todayCurrencyRate - specifiedDateCurrencyRate) > 0 ? CurrencyDynamic.NEGATIVE: CurrencyDynamic.POSITIVE;
 	}
 
-	private ResponseBody getMediaTypeResponseBodyByURL(String url) {
+	private GifByteArrayHolder getMediaTypeResponseBodyByURL(String url) {
 		Request request = new Request.Builder().url(url).build();
 		Call call = okHttpClient.newCall(request);
 		try(Response response = call.execute()) {
-			return response.body();
-		} catch (IOException e) {
+			byte[] bytes = IOUtils.toByteArray(response.body().byteStream());
+			return new GifByteArrayHolder(bytes);
+		} catch (Exception e) {
 			log.error("Error during http request for URL:{}. To get target GIF image, error:{}", url, e);
 			throw new GifFetchingException(e.getMessage());
 		}

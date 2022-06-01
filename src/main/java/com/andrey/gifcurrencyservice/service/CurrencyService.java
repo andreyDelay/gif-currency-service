@@ -1,7 +1,7 @@
 package com.andrey.gifcurrencyservice.service;
 
-import okhttp3.ResponseBody;
+import com.andrey.gifcurrencyservice.dto.GifByteArrayHolder;
 
 public interface CurrencyService {
-	ResponseBody getGifOnCurrencyRateCondition(String currencyCode);
+	GifByteArrayHolder getGifOnCurrencyRateCondition(String currencyCode);
 }

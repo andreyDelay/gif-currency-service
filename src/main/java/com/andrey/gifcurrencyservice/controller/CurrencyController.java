@@ -1,8 +1,8 @@
 package com.andrey.gifcurrencyservice.controller;
 
+import com.andrey.gifcurrencyservice.dto.GifByteArrayHolder;
 import com.andrey.gifcurrencyservice.service.CurrencyService;
 import lombok.RequiredArgsConstructor;
-import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
-import java.io.IOException;
 
 @Validated
 @RestController
@@ -23,9 +22,8 @@ public class CurrencyController {
 	@GetMapping(value = "/changes", produces = MediaType.IMAGE_GIF_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public byte [] getGif(@Valid @Pattern(regexp = "[A-Z]{3}")
-										@RequestParam("charCode") String currencyCode) throws IOException {
-		return IOUtils.toByteArray(
-				currencyService.getGifOnCurrencyRateCondition(currencyCode)
-				.byteStream());
+						@RequestParam("charCode") String currencyCode) {
+		GifByteArrayHolder byteArrayHolder = currencyService.getGifOnCurrencyRateCondition(currencyCode);
+		return byteArrayHolder.getGifByteArray();
 	}
 }
