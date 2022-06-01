@@ -1,7 +1,7 @@
 package com.andrey.gifcurrencyservice.controller;
 
 import com.andrey.gifcurrencyservice.service.CurrencyService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.commons.io.IOUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Validated
 @RestController
-@AllArgsConstructor
+@RequiredArgsConstructor
 @RequestMapping(value = "/api/v1/currency/rates")
 public class CurrencyController {
 

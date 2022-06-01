@@ -7,14 +7,14 @@ import com.andrey.gifcurrencyservice.feign.CurrencyFeignClientAPI;
 import com.andrey.gifcurrencyservice.model.ApiRates;
 import com.andrey.gifcurrencyservice.model.CurrencyRate;
 import com.andrey.gifcurrencyservice.service.RateService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class RateServiceImpl implements RateService {
 
 	private final CurrencyFeignClientAPI currencyFeignClientAPI;

@@ -6,13 +6,13 @@ import com.andrey.gifcurrencyservice.feign.GifFeignClientAPI;
 import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
 import com.andrey.gifcurrencyservice.model.GiphyResponseList;
 import com.andrey.gifcurrencyservice.service.GifService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class GifServiceImpl implements GifService {
 	private final GifFeignClientAPI gifFeignClientAPI;
 	private final GifApiConfigurationProperties apiConfigurationProperties;

@@ -5,7 +5,7 @@ import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
 import com.andrey.gifcurrencyservice.service.CurrencyService;
 import com.andrey.gifcurrencyservice.service.GifService;
 import com.andrey.gifcurrencyservice.service.RateService;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import okhttp3.*;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.time.LocalDate;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class CurrencyServiceImpl implements CurrencyService {
 
 	private final RateService rateService;
