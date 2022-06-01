@@ -11,7 +11,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @RestControllerAdvice
 public class ApiExceptionHandlerController extends ResponseEntityExceptionHandler {
 
-	@ExceptionHandler({ApiException.class})
+	@ExceptionHandler(ApiException.class)
 	public ResponseEntity<?> handleExceptions(ApiException apiException) {
 		ApiErrorResponseDto apiErrorResponse =
 				new ApiErrorResponseDto(apiException.getCode(), apiException.getMessage());
@@ -19,7 +19,7 @@ public class ApiExceptionHandlerController extends ResponseEntityExceptionHandle
 	}
 
 	@ResponseStatus(HttpStatus.SERVICE_UNAVAILABLE)
-	@ExceptionHandler({Exception.class})
+	@ExceptionHandler(Exception.class)
 	public ApiErrorResponseDto generalHandler(Exception e) {
 		return new ApiErrorResponseDto(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
 	}
