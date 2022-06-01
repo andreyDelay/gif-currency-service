@@ -14,12 +14,10 @@ public interface CurrencyFeignClientAPI {
 
 	@GetMapping("{latest}")
 	Optional<ApiRates> getRates(@PathVariable String latest,
-	                            @RequestParam("app_id") String appId,
-								@RequestParam("base") String base);
+	                            @RequestParam("app_id") String appId, @RequestParam("base") String base);
 
 	@GetMapping("{historical}/{specifiedDate}")
-	Optional<ApiRates> getRatesForSpecifiedData(@PathVariable String historical,
-	                                            @PathVariable String specifiedDate,
+	Optional<ApiRates> getRatesForSpecifiedData(@PathVariable String historical, @PathVariable String specifiedDate,
 	                                            @RequestParam("app_id") String appId,
 												@RequestParam("base") String base);
 }

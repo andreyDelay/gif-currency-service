@@ -29,15 +29,15 @@ public class GifServiceImpl implements GifService {
 	}
 
 	private String getRandomGifURL(GiphyResponseList giphyResponseList) {
-		int gifsQty = giphyResponseList.getData().size();
+		int gifsQty = giphyResponseList.getRootCollection().size();
 		int randomGifIndex = getRandomImageIndex(gifsQty);
 
 		return giphyResponseList
-				.getData()
+				.getRootCollection()
 				.get(randomGifIndex)
 				.getImages()
 				.get(apiConfigurationProperties.getImageObjectName())
-				.getUrl();
+				.getGifFormatURL();
 	}
 
 	private int getRandomImageIndex(int gifsQty) {

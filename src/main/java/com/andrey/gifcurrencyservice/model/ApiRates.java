@@ -7,8 +7,6 @@ import java.util.Map;
 
 @Value
 public class ApiRates {
-	private String disclaimer;
-	private String license;
 	private Date timestamp;
 	private String base;
 	private Map<String, Double> rates;

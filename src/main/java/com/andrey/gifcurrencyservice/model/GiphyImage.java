@@ -1,10 +1,14 @@
 package com.andrey.gifcurrencyservice.model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
 
 @Data
 public class GiphyImage {
-	private String url;
-	private String mp4;
-	private String webp;
+	@JsonProperty("url")
+	private String gifFormatURL;
+	@JsonProperty("mp4")
+	private String mp4FormatURL;
+	@JsonProperty("webp")
+	private String webpFormatURL;
 }
