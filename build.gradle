@@ -32,6 +32,7 @@ dependencies {
 	implementation group: 'com.jayway.jsonpath', name: 'json-path', version: '2.6.0'
 	implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.6.9'
 	implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.9.3'
+	testImplementation group: 'com.github.tomakehurst', name: 'wiremock', version: '2.27.2'
 }
 
 dependencyManagement {
