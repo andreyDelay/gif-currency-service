@@ -21,6 +21,9 @@ public class GifServiceImpl implements GifService {
 
 	@Override
 	public String getGifUrlByCurrencyDynamic(CurrencyDynamic currencyDynamic) {
+		log.info("Getting collection from Giphy through feign, for search tag 'g='{}.",
+				currencyDynamic.getCurrencyRatesRelationDynamicPerformance());
+
 		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
 						apiConfigurationProperties.getApiKey(),
 						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
@@ -35,6 +38,7 @@ public class GifServiceImpl implements GifService {
 	}
 
 	private String getRandomGifURL(GiphyResponseList giphyResponseList) {
+		log.info("Grabbing random object from Giphy collection.");
 		int gifsQty = giphyResponseList.getRootCollection().size();
 		int randomGifIndex = getRandomImageIndex(gifsQty);
 
@@ -47,6 +51,6 @@ public class GifServiceImpl implements GifService {
 	}
 
 	private int getRandomImageIndex(int gifsQty) {
-		return ThreadLocalRandom.current().nextInt(1, gifsQty);
+		return ThreadLocalRandom.current().nextInt(1, gifsQty + 1);
 	}
 }

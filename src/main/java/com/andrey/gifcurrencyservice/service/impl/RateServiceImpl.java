@@ -24,6 +24,7 @@ public class RateServiceImpl implements RateService {
 
 	@Override
 	public CurrencyRate getRateByCodeLatest(String currencyCode) {
+		log.info("Getting currency rates collection from feign.");
 		ApiRates apiRates = currencyFeignClientAPI.getRates(
 						apiConfiguration.getLatest(),
 						apiConfiguration.getAppId(),
@@ -39,6 +40,7 @@ public class RateServiceImpl implements RateService {
 
 	@Override
 	public CurrencyRate getRateByCodeForSpecifiedDate(String currencyCode, LocalDate specifiedDate) {
+		log.info("Getting currency rates collection from feign, for specified date: {}.", specifiedDate);
 		ApiRates apiRates = currencyFeignClientAPI.getRatesForSpecifiedData(
 						apiConfiguration.getHistorical(),
 						getApiSpecifiedDateFormat(specifiedDate),
@@ -55,6 +57,7 @@ public class RateServiceImpl implements RateService {
 	}
 
 	private CurrencyRate fetchCurrencyRateFromApiRates(ApiRates apiRates, String currencyCode) {
+		log.info("Grabbing currency rate for code - {}, from collection of rates.", currencyCode);
 		return apiRates.getRates().entrySet().stream()
 				.filter(entry -> entry.getKey().equals(currencyCode))
 				.map(entry -> new CurrencyRate(entry.getKey(), entry.getValue()))

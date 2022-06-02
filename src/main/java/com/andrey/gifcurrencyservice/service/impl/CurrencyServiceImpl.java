@@ -42,13 +42,14 @@ public class CurrencyServiceImpl implements CurrencyService {
 	}
 
 	private GifByteArrayHolder getMediaTypeResponseBodyByURL(String url) {
+		log.info("Getting target image/gif byte array from http responseBody.");
 		Request request = new Request.Builder().url(url).build();
 		Call call = okHttpClient.newCall(request);
 		try(Response response = call.execute()) {
 			byte[] bytes = IOUtils.toByteArray(response.body().byteStream());
 			return new GifByteArrayHolder(bytes);
 		} catch (Exception e) {
-			log.error("Error during http request for URL:{}. To get target GIF image, error:{}", url, e);
+			log.error("Error during getting target GIF image through http request for URL:{}, error:{}", url, e);
 			throw new GifFetchingException(e.getMessage());
 		}
 	}
