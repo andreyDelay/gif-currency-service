@@ -6,7 +6,6 @@ import com.andrey.gifcurrencyservice.model.CurrencyRatesDynamic;
 import com.andrey.gifcurrencyservice.service.CurrencyService;
 import com.andrey.gifcurrencyservice.service.GifService;
 import com.andrey.gifcurrencyservice.service.RateService;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.*;
 import org.apache.commons.io.IOUtils;
@@ -16,12 +15,17 @@ import java.time.LocalDate;
 
 @Slf4j
 @Service
-@RequiredArgsConstructor
 public class CurrencyServiceImpl implements CurrencyService {
 
 	private final RateService rateService;
 	private final GifService gifService;
-	private final OkHttpClient okHttpClient = new OkHttpClient();
+	private final OkHttpClient okHttpClient;
+
+	public CurrencyServiceImpl(RateService rateService, GifService gifService) {
+		this.rateService = rateService;
+		this.gifService = gifService;
+		this.okHttpClient = new OkHttpClient();
+	}
 
 	@Override
 	public GifByteArrayHolder getGifImageOnCurrencyRatesDynamicCondition(String currencyCode) {
