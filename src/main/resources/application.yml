@@ -1,0 +1,32 @@
+server:
+  port: 8088
+
+feign-client:
+  currency-api:
+    url: ${CURRENCY_API_URL}
+    options:
+      latest: latest.json
+      historical: historical
+      app-id: ${APP_ID}
+      objective-currency-code: USD
+  gif-api:
+    url: ${GIF_API_URL}
+    options:
+      api-key: ${API_KEY}
+      limit: 30
+      root-element-name: data
+      target-objects-collection-name: images
+      specified-image-object-name: original
+      image-type-name: url
+
+spring:
+  cache:
+    caffeine:
+      spec: maximumSize=24,expireAfterAccess=1h
+
+
+logging:
+  level:
+    com.andrey.gifcurrencyservice.feign: DEBUG
+  file:
+    name: logs/OpenFeign.log
