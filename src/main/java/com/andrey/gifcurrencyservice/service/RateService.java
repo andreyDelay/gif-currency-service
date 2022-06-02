@@ -5,6 +5,6 @@ import com.andrey.gifcurrencyservice.model.CurrencyRate;
 import java.time.LocalDate;
 
 public interface RateService {
-	CurrencyRate getRateByCodeLatest(String currencyCode);
-	CurrencyRate getRateByCodeForSpecifiedDate(String currencyCode, LocalDate specifiedDate);
+	CurrencyRate getCurrencyRate(String currencyCode);
+	CurrencyRate getCurrencyRateForSpecifiedDate(String currencyCode, LocalDate specifiedDate);
 }

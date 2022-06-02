@@ -19,7 +19,10 @@ feign-client:
       image-object-name: original
       image-type-name: url
 
-
+spring:
+  cache:
+    caffeine:
+      spec: maximumSize=24,expireAfterAccess=1h
 
 logging:
   level:

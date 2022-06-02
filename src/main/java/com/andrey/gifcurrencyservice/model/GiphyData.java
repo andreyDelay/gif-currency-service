@@ -13,5 +13,6 @@ public class GiphyData {
 	private String imageId;
 	@JsonProperty("url")
 	private String originalImageUrl;
-	private Map<String, GiphyImage> images;
+	@JsonProperty("images")
+	private Map<String, GiphyImage> imagesMap;
 }

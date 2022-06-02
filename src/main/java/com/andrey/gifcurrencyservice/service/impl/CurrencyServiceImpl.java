@@ -26,10 +26,9 @@ public class CurrencyServiceImpl implements CurrencyService {
 	@Override
 	public GifByteArrayHolder getGifOnCurrencyRateCondition(String currencyCode) {
 		LocalDate yesterday = LocalDate.now().minusDays(1);
-		double currencyRateValueForToday =
-				rateService.getRateByCodeLatest(currencyCode).getCurrencyRate();
+		double currencyRateValueForToday = rateService.getCurrencyRate(currencyCode).getCurrencyRate();
 		double currencyRateValueForYesterday =
-				rateService.getRateByCodeForSpecifiedDate(currencyCode, yesterday).getCurrencyRate();
+				rateService.getCurrencyRateForSpecifiedDate(currencyCode, yesterday).getCurrencyRate();
 
 		CurrencyDynamic dynamic = determineDynamicType(currencyRateValueForToday, currencyRateValueForYesterday);
 		String targetGifUrl = gifService.getGifUrlByCurrencyDynamic(dynamic);

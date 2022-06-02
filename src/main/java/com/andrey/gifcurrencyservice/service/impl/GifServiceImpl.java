@@ -29,8 +29,8 @@ public class GifServiceImpl implements GifService {
 						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
 						apiConfigurationProperties.getLimit())
 				.orElseThrow(() -> {
-					log.error("Error in class {}, method {}, during feign client Giphy API response processing.",
-							this.getClass().getSimpleName(), this.getClass().getEnclosingMethod().getName());
+					log.error("Error in class {}, during grabbing URL from feign client Giphy API response.",
+							this.getClass().getSimpleName());
 					throw new GifFeignClientResponseException("Cannot get a response from giphy API.");
 				});
 
@@ -40,17 +40,17 @@ public class GifServiceImpl implements GifService {
 	private String getRandomGifURL(GiphyResponseList giphyResponseList) {
 		log.info("Grabbing random object from Giphy collection.");
 		int gifsQty = giphyResponseList.getRootCollection().size();
-		int randomGifIndex = getRandomImageIndex(gifsQty);
+		int randomGifObjectIndex = getRandomImageIndex(gifsQty);
 
 		return giphyResponseList
 				.getRootCollection()
-				.get(randomGifIndex)
-				.getImages()
+				.get(randomGifObjectIndex)
+				.getImagesMap()
 				.get(apiConfigurationProperties.getImageObjectName())
 				.getGifFormatURL();
 	}
 
 	private int getRandomImageIndex(int gifsQty) {
-		return ThreadLocalRandom.current().nextInt(1, gifsQty + 1);
+		return ThreadLocalRandom.current().nextInt(0, gifsQty);
 	}
 }
