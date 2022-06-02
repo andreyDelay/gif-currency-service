@@ -7,7 +7,6 @@ import com.andrey.gifcurrencyservice.service.FeignService;
 import com.andrey.gifcurrencyservice.service.RateService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -18,7 +17,6 @@ import java.time.LocalDate;
 public class RateServiceImpl implements RateService {
 
 	private final FeignService feignService;
-	private final CacheManager cacheManager;
 
 	@Override
 	public CurrencyRate getCurrencyRate(String currencyCode) {
@@ -33,7 +31,7 @@ public class RateServiceImpl implements RateService {
 	}
 
 	private CurrencyRate fetchCurrencyRateFromApiRates(ApiRates apiRates, String currencyCode) {
-		log.info("Grabbing currency rate for code - {}, from collection of rates.", currencyCode);
+		log.info("Grabbing currency rate of code - {}, from collection of rates.", currencyCode);
 		return apiRates.getRates().entrySet().stream()
 				.filter(entry -> entry.getKey().equals(currencyCode))
 				.map(entry -> new CurrencyRate(entry.getKey(), entry.getValue()))

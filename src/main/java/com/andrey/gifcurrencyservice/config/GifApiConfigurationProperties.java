@@ -12,7 +12,7 @@ import org.springframework.context.annotation.Configuration;
 public class GifApiConfigurationProperties {
     private String apiKey;
     private int limit;
-    private String imageObjectName;
+    private String specifiedImageObjectName;
     private String imageTypeName;
     private String rootElementName;
     private String targetObjectsCollectionName;

@@ -1,12 +1,12 @@
 package com.andrey.gifcurrencyservice.model;
 
-public enum CurrencyDynamic {
+public enum CurrencyRatesDynamic {
     POSITIVE("rich"),
     NEGATIVE("broke");
 
     private String currencyRatesRelationDynamicPerformance;
 
-    CurrencyDynamic(String currencyRatesRelationDynamicPerformance) {
+    CurrencyRatesDynamic(String currencyRatesRelationDynamicPerformance) {
         this.currencyRatesRelationDynamicPerformance = currencyRatesRelationDynamicPerformance;
     }
 

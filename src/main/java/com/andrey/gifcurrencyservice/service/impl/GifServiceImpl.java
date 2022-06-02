@@ -1,10 +1,10 @@
 package com.andrey.gifcurrencyservice.service.impl;
 
-import com.andrey.gifcurrencyservice.config.GifApiConfigurationProperties;
-import com.andrey.gifcurrencyservice.exception.GifFeignClientResponseException;
-import com.andrey.gifcurrencyservice.feign.GifFeignClientAPI;
-import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
+import com.andrey.gifcurrencyservice.exception.GifFetchingException;
+import com.andrey.gifcurrencyservice.model.CurrencyRatesDynamic;
+import com.andrey.gifcurrencyservice.model.GiphyImage;
 import com.andrey.gifcurrencyservice.model.GiphyResponseList;
+import com.andrey.gifcurrencyservice.service.FeignService;
 import com.andrey.gifcurrencyservice.service.GifService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -16,38 +16,32 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 @RequiredArgsConstructor
 public class GifServiceImpl implements GifService {
-	private final GifFeignClientAPI gifFeignClientAPI;
-	private final GifApiConfigurationProperties apiConfigurationProperties;
+
+	private final FeignService feignService;
 
 	@Override
-	public String getGifUrlByCurrencyDynamic(CurrencyDynamic currencyDynamic) {
-		log.info("Getting collection from Giphy through feign, for search tag 'g='{}.",
-				currencyDynamic.getCurrencyRatesRelationDynamicPerformance());
+	public String getGifUrlByCurrencyDynamic(CurrencyRatesDynamic currencyDynamic) {
+		log.info("Grabbing random object from Giphy collection for currency dynamic:{}.", currencyDynamic);
+		GiphyResponseList giphyResponseList;
+		switch (currencyDynamic) {
+			case POSITIVE -> giphyResponseList = feignService.getPositiveGiphyCollection(currencyDynamic);
+			case NEGATIVE -> giphyResponseList = feignService.getNegativeGiphyCollection(currencyDynamic);
+			default -> throw new GifFetchingException(
+					String.format("Unexpected behaviour, invalid currency dynamic value %s.",
+							currencyDynamic.getCurrencyRatesRelationDynamicPerformance()));
+		}
 
-		GiphyResponseList giphyResponseList = gifFeignClientAPI.getGif(
-						apiConfigurationProperties.getApiKey(),
-						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
-						apiConfigurationProperties.getLimit())
-				.orElseThrow(() -> {
-					log.error("Error in class {}, during grabbing URL from feign client Giphy API response.",
-							this.getClass().getSimpleName());
-					throw new GifFeignClientResponseException("Cannot get a response from giphy API.");
-				});
-
-		return getRandomGifURL(giphyResponseList);
-	}
-
-	private String getRandomGifURL(GiphyResponseList giphyResponseList) {
-		log.info("Grabbing random object from Giphy collection.");
-		int gifsQty = giphyResponseList.getRootCollection().size();
+		int gifsQty = giphyResponseList.getGiphyRootCollection().size();
 		int randomGifObjectIndex = getRandomImageIndex(gifsQty);
 
 		return giphyResponseList
-				.getRootCollection()
+				.getGiphyRootCollection()
 				.get(randomGifObjectIndex)
 				.getImagesMap()
-				.get(apiConfigurationProperties.getImageObjectName())
-				.getGifFormatURL();
+				.values().stream()
+				.map(GiphyImage::getGifFormatURL)
+				.findFirst()
+				.orElseThrow(() -> new RuntimeException(""));
 	}
 
 	private int getRandomImageIndex(int gifsQty) {

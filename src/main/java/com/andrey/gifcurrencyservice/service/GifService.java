@@ -1,7 +1,7 @@
 package com.andrey.gifcurrencyservice.service;
 
-import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
+import com.andrey.gifcurrencyservice.model.CurrencyRatesDynamic;
 
 public interface GifService {
-    String getGifUrlByCurrencyDynamic(CurrencyDynamic currencyDynamic);
+    String getGifUrlByCurrencyDynamic(CurrencyRatesDynamic currencyDynamic);
 }

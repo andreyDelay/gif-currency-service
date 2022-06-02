@@ -4,6 +4,6 @@ import org.springframework.http.HttpStatus;
 
 public class GifFetchingException extends ApiException {
     public GifFetchingException(String message) {
-        super("CANNOT_GET_GIT_RECOURSE_ERROR", message, HttpStatus.BAD_GATEWAY);
+        super("CANNOT_GET_GIF_RECOURSE_ERROR", message, HttpStatus.BAD_GATEWAY);
     }
 }

@@ -2,7 +2,7 @@ package com.andrey.gifcurrencyservice.service.impl;
 
 import com.andrey.gifcurrencyservice.dto.GifByteArrayHolder;
 import com.andrey.gifcurrencyservice.exception.GifFetchingException;
-import com.andrey.gifcurrencyservice.model.CurrencyDynamic;
+import com.andrey.gifcurrencyservice.model.CurrencyRatesDynamic;
 import com.andrey.gifcurrencyservice.service.CurrencyService;
 import com.andrey.gifcurrencyservice.service.GifService;
 import com.andrey.gifcurrencyservice.service.RateService;
@@ -24,20 +24,26 @@ public class CurrencyServiceImpl implements CurrencyService {
 	private final OkHttpClient okHttpClient = new OkHttpClient();
 
 	@Override
-	public GifByteArrayHolder getGifOnCurrencyRateCondition(String currencyCode) {
+	public GifByteArrayHolder getGifImageOnCurrencyRatesDynamicCondition(String currencyCode) {
+		log.info("Getting rates to determine currency rates dynamic.");
 		LocalDate yesterday = LocalDate.now().minusDays(1);
-		double currencyRateValueForToday = rateService.getCurrencyRate(currencyCode).getCurrencyRate();
-		double currencyRateValueForYesterday =
-				rateService.getCurrencyRateForSpecifiedDate(currencyCode, yesterday).getCurrencyRate();
+		double currencyRateValueForToday =
+				rateService.getCurrencyRate(currencyCode)
+						.getCurrencyRate();
 
-		CurrencyDynamic dynamic = determineDynamicType(currencyRateValueForToday, currencyRateValueForYesterday);
+		double currencyRateValueForYesterday =
+				rateService.getCurrencyRateForSpecifiedDate(currencyCode, yesterday)
+						.getCurrencyRate();
+
+		CurrencyRatesDynamic dynamic = determineDynamicType(currencyRateValueForToday, currencyRateValueForYesterday);
 		String targetGifUrl = gifService.getGifUrlByCurrencyDynamic(dynamic);
 
 		return getMediaTypeResponseBodyByURL(targetGifUrl);
 	}
 
-	private CurrencyDynamic determineDynamicType(double todayCurrencyRate, double specifiedDateCurrencyRate) {
-		return (todayCurrencyRate - specifiedDateCurrencyRate) > 0 ? CurrencyDynamic.NEGATIVE: CurrencyDynamic.POSITIVE;
+	private CurrencyRatesDynamic determineDynamicType(double todayCurrencyRate, double specifiedDateCurrencyRate) {
+		log.info("Determining a currency dynamic.");
+		return (todayCurrencyRate - specifiedDateCurrencyRate) > 0 ? CurrencyRatesDynamic.NEGATIVE: CurrencyRatesDynamic.POSITIVE;
 	}
 
 	private GifByteArrayHolder getMediaTypeResponseBodyByURL(String url) {

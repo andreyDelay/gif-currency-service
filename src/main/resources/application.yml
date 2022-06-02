@@ -16,7 +16,7 @@ feign-client:
       limit: 30
       root-element-name: data
       target-objects-collection-name: images
-      image-object-name: original
+      specified-image-object-name: original
       image-type-name: url
 
 spring:
@@ -24,8 +24,9 @@ spring:
     caffeine:
       spec: maximumSize=24,expireAfterAccess=1h
 
+
 logging:
   level:
-    com.andrey.gifcurrencyservice.feign.*: DEBUG
+    com.andrey.gifcurrencyservice.feign: DEBUG
   file:
     name: logs/OpenFeign.log

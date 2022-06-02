@@ -23,7 +23,7 @@ public class CurrencyController {
 	@ResponseStatus(HttpStatus.OK)
 	public byte [] getGif(@Valid @Pattern(regexp = "[A-Z]{3}")
 						@RequestParam("charCode") String currencyCode) {
-		GifByteArrayHolder byteArrayHolder = currencyService.getGifOnCurrencyRateCondition(currencyCode);
+		GifByteArrayHolder byteArrayHolder = currencyService.getGifImageOnCurrencyRatesDynamicCondition(currencyCode);
 		return byteArrayHolder.getGifByteArray();
 	}
 }
