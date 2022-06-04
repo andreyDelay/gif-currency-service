@@ -1,0 +1,28 @@
+server:
+  port: 8888
+
+spring:
+  cache:
+    type: NONE
+
+feign-client:
+  currency-api:
+    url: http://localhost:8080/v1/gifs
+    options:
+      latest: latest.json
+      historical: historical
+      app-id: ${APP_ID}
+      objective-currency-code: USD
+  gif-api:
+    url: http://localhost:8080/currency/api
+    options:
+      api-key: ${API_KEY}
+      limit: 30
+      root-element-name: data
+      target-objects-collection-name: images
+      specified-image-object-name: original
+      image-type-name: url
+
+logging:
+  level:
+    com.andrey.gifcurrencyservice.feign: DEBUG

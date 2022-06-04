@@ -22,7 +22,7 @@ public class CurrencyController {
 	@GetMapping(value = "/changes", produces = MediaType.IMAGE_GIF_VALUE)
 	@ResponseStatus(HttpStatus.OK)
 	public byte [] getGif(@Valid @Pattern(regexp = "[A-Z]{3}")
-						@RequestParam("charCode") String currencyCode) {
+							@RequestParam("charCode") String currencyCode) {
 		GifByteArrayHolder byteArrayHolder = currencyService.getGifImageOnCurrencyRatesDynamicCondition(currencyCode);
 		return byteArrayHolder.getGifByteArray();
 	}
