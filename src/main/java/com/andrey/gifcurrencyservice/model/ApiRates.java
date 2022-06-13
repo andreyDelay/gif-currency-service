@@ -1,11 +1,15 @@
 package com.andrey.gifcurrencyservice.model;
 
-import lombok.Value;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 import java.util.Map;
 
-@Value
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ApiRates {
 	private Date timestamp;
 	private String base;
