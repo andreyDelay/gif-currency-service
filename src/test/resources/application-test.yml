@@ -7,14 +7,14 @@ spring:
 
 feign-client:
   currency-api:
-    url: http://localhost:8080/v1/gifs
+    url: http://localhost:8080/currency/api
     options:
       latest: latest.json
       historical: historical
       app-id: ${APP_ID}
       objective-currency-code: USD
   gif-api:
-    url: http://localhost:8080/currency/api
+    url: http://localhost:8080/v1/gifs/search
     options:
       api-key: ${API_KEY}
       limit: 30
@@ -22,6 +22,15 @@ feign-client:
       target-objects-collection-name: images
       specified-image-object-name: original
       image-type-name: url
+
+json:
+  stubs:
+    currency:
+      latest: "src/test/resources/latest-rates.json"
+      specified-date: "src/test/resources/specified-date-rates.json"
+    gif:
+      rich: "src/test/resources/rich-gif-api-response.json"
+      broke: "src/test/resources/broke-gif-api-response.json"
 
 logging:
   level:

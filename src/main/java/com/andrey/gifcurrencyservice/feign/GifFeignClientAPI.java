@@ -11,13 +11,13 @@ import java.util.Optional;
 
 @FeignClient(value = "gif-service", url = "${feign-client.gif-api.url}", configuration = FeignConfig.class)
 public interface GifFeignClientAPI {
-    @GetMapping("/search")
+    @GetMapping
     @Cacheable(value = "positiveGifs")
     Optional<GiphyResponseList> requestPositiveGIFs(@RequestParam("api_key") String key,
                                                     @RequestParam("q") String searchQueryParam,
                                                     @RequestParam("limit") int gifsSearchLimit);
 
-    @GetMapping("/search")
+    @GetMapping
     @Cacheable(value = "negativeGifs")
     Optional<GiphyResponseList> requestNegativeGIFs(@RequestParam("api_key") String key,
                                                     @RequestParam("q") String searchQueryParam,

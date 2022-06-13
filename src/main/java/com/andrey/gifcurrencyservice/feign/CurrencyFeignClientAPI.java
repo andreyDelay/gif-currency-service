@@ -14,12 +14,12 @@ import java.util.Optional;
 public interface CurrencyFeignClientAPI {
 
 	@Cacheable(value = "latestRates")
-	@GetMapping("{latest}")
+	@GetMapping("/{latest}")
 	Optional<ApiRates> getRates(@PathVariable String latest,
 	                            @RequestParam("app_id") String appId, @RequestParam("base") String base);
 
 	@Cacheable(value = "ratesForDate")
-	@GetMapping("{historical}/{specifiedDate}")
+	@GetMapping("/{historical}/{specifiedDate}")
 	Optional<ApiRates> getRatesForSpecifiedData(@PathVariable String historical, @PathVariable String specifiedDate,
 	                                            @RequestParam("app_id") String appId,
 												@RequestParam("base") String base);

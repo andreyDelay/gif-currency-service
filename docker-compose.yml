@@ -1,0 +1,13 @@
+version: "3.9"
+services:
+  gif-service:
+    image: andreydelay/gif-service
+    build: .
+    restart: on-failure
+    ports:
+      - '8088:8088'
+    environment:
+      CURRENCY_API_URL: https://openexchangerates.org/api
+      GIF_API_URL: api.giphy.com/v1/gifs/search
+      APP_ID: aeafe872a06a4529b38b8226970ef527
+      API_KEY: oPIMd6yEozhTyom1QrGcgeORY83ygDTU

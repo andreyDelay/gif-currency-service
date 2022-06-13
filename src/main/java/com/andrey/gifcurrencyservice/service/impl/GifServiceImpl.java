@@ -26,7 +26,7 @@ public class GifServiceImpl implements GifService {
 	private final GifApiConfigurationProperties gifApiConfigurationProperties;
 
 	@Override
-	public String getGifUrlByCurrencyDynamic(CurrencyRatesDynamic currencyDynamic) {
+	public GiphyImage getGifByCurrencyDynamic(CurrencyRatesDynamic currencyDynamic) {
 		log.info("Grabbing random object from Giphy collection for currency dynamic:{}.", currencyDynamic);
 		GiphyResponseList giphyResponseList;
 		switch (currencyDynamic) {
@@ -40,16 +40,15 @@ public class GifServiceImpl implements GifService {
 		int gifsQty = giphyResponseList.getGiphyRootCollection().size();
 		int randomGifObjectIndex = getRandomImageIndex(gifsQty);
 
-
-
-		return giphyResponseList
+		GiphyImage giphyImage = giphyResponseList
 				.getGiphyRootCollection()
 				.get(randomGifObjectIndex)
 				.getImagesMap()
 				.values().stream()
-				.map(GiphyImage::getGifFormatURL)
 				.findFirst()
 				.orElseThrow(() -> new RuntimeException(""));
+
+		return giphyImage;
 	}
 
 	private int getRandomImageIndex(int gifsQty) {
@@ -58,23 +57,7 @@ public class GifServiceImpl implements GifService {
 
 	private GiphyResponseList getPositiveGiphyCollection(CurrencyRatesDynamic currencyDynamic) {
 		log.info("Getting positive GIFS.");
-		GiphyResponseList giphyCollection = requestGiphyCollectionWithFeignClient(currencyDynamic);
-		return filterGiphyCollectionBySpecifiedImageObjectName(giphyCollection,
-				gifApiConfigurationProperties.getSpecifiedImageObjectName());
-	}
-
-	private GiphyResponseList getNegativeGiphyCollection(CurrencyRatesDynamic currencyDynamic) {
-		log.info("Getting negative GIFS.");
-		GiphyResponseList giphyCollection = requestGiphyCollectionWithFeignClient(currencyDynamic);
-		return filterGiphyCollectionBySpecifiedImageObjectName(giphyCollection,
-				gifApiConfigurationProperties.getSpecifiedImageObjectName());
-
-	}
-
-	private GiphyResponseList requestGiphyCollectionWithFeignClient(CurrencyRatesDynamic currencyDynamic) {
-		log.info("Requesting Giphy collection from API through feign, for search tag 'g='{}.", currencyDynamic);
-
-		return gifFeignClientAPI.requestPositiveGIFs(
+		GiphyResponseList giphyCollection = gifFeignClientAPI.requestPositiveGIFs(
 						gifApiConfigurationProperties.getApiKey(),
 						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
 						gifApiConfigurationProperties.getLimit())
@@ -83,6 +66,24 @@ public class GifServiceImpl implements GifService {
 							this.getClass().getSimpleName());
 					throw new GifFeignClientResponseException("Cannot get a response from giphy API.");
 				});
+		return filterGiphyCollectionBySpecifiedImageObjectName(giphyCollection,
+				gifApiConfigurationProperties.getSpecifiedImageObjectName());
+	}
+
+	private GiphyResponseList getNegativeGiphyCollection(CurrencyRatesDynamic currencyDynamic) {
+		log.info("Getting negative GIFS.");
+		GiphyResponseList giphyCollection = gifFeignClientAPI.requestNegativeGIFs(
+						gifApiConfigurationProperties.getApiKey(),
+						currencyDynamic.getCurrencyRatesRelationDynamicPerformance(),
+						gifApiConfigurationProperties.getLimit())
+				.orElseThrow(() -> {
+					log.error("Error in class {}, during grabbing URL from feign client Giphy API response.",
+							this.getClass().getSimpleName());
+					throw new GifFeignClientResponseException("Cannot get a response from giphy API.");
+				});
+		return filterGiphyCollectionBySpecifiedImageObjectName(giphyCollection,
+				gifApiConfigurationProperties.getSpecifiedImageObjectName());
+
 	}
 
 	private GiphyResponseList filterGiphyCollectionBySpecifiedImageObjectName(GiphyResponseList giphyResponseList,

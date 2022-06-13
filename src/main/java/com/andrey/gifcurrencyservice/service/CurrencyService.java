@@ -1,7 +1,7 @@
 package com.andrey.gifcurrencyservice.service;
 
-import com.andrey.gifcurrencyservice.dto.GifByteArrayHolder;
+import com.andrey.gifcurrencyservice.dto.GifImageDto;
 
 public interface CurrencyService {
-	GifByteArrayHolder getGifImageOnCurrencyRatesDynamicCondition(String currencyCode);
+	GifImageDto getGifImageOnCurrencyRatesDynamicCondition(String currencyCode);
 }
